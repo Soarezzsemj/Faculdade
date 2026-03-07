@@ -23,6 +23,8 @@ int main() {
     char nomes[32];
     float nota1;
     float nota2;
+    float media;
+
 
     char linha[100];
     fgets(linha, sizeof(linha), fp); // pula: Nome,Nota1,Nota2
@@ -30,8 +32,20 @@ int main() {
     printf("Nome do aluno\tNota1\tNota2\n");
 
     while (fscanf(fp, " %[^,],%f,%f", nomes, &nota1, &nota2) == 3) {
-        printf("Nome: %s\tNota1: %.2f\tNota2: %.2f\n", nomes, nota1, nota2);
+
+
+
+         media = (nota1 + nota2) / 2;
+
+        printf("Nome: %s\tNota1: %.2f\tNota2: %.2f media: %.2f\n", nomes, nota1, nota2, media);
+
+        if (media >= 7) {
+            printf("Alunos que passaram: %s \t \n", nomes);
+        }
+
+
     }
+
 
     fclose(fp);
 
