@@ -1,46 +1,56 @@
-//
-// Created by Carlos Eduardo on 23/03/26.
-//
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "Lista.h"
 
-int main () {
+// função auxiliar pra imprimir
+void imprimirLista(Lista *L) {
+    if (L == NULL) {
+        printf("Lista inexistente.\n");
+        return;
+    }
 
-    system("clear");
+    printf("=== LISTA DE TAREFAS ===\n");
+    printf("Total: %d / Capacidade: %d\n\n", L->Tamanho, L->Capacidade);
 
-    Tarefa * T = (Tarefa *) malloc (sizeof(Tarefa));
+    for (int i = 0; i < L->Tamanho; i++) {
+        Tarefa t = L->Dados[i];
 
-    strcpy(T->Titulo, "Codiguin da calsa angelical");
-    strcpy(T->Responsavel, "JuninBalaTensa");
-    T -> Avaliação = 4;
-    T -> Progresso = 0.80;
-    T -> Status = EM_ANDAMENTO;
+        printf("Tarefa %d:\n", i + 1);
+        printf("Titulo: %s\n", t.Titulo);
+        printf("Responsavel: %s\n", t.Responsavel);
+        printf("Status: %d\n", t.Status);
+        printf("Progresso: %.2f\n", t.Progresso);
+        printf("Avaliacao: %d\n", t.Avaliação);
+        printf("----------------------\n");
+    }
+}
 
-    // utilizando struct tarefa (sem ponteiro)
+int main() {
+    // cria lista com capacidade 10
+    Lista *L = CriarLista(10);
 
-    Tarefa U;
+    if (L == NULL) {
+        printf("Erro ao criar lista\n");
+        return 1;
+    }
 
-    strcpy(U.Titulo, "como ser o rei da p90");
-    strcpy(U.Responsavel, "g2 cabeludo");
-    U.Status = EM_ANDAMENTO;
-    U.Progresso = 0.80;
-    U.Avaliação= 56;
+    // criando tarefas manualmente
+    Tarefa t1 = {"Estudar C", "Carlos", EM_ANDAMENTO, 0.5, 4};
+    Tarefa t2 = {"Fazer trabalho", "Joao", A_FAZER, 0.0, 0};
+    Tarefa t3 = {"Treinar", "Carlos", FEITO, 1.0, 5};
 
-    Tarefa T1 = {"Entrega do relatório de BD", "Rafael Souza", FEITO, 1.00, 4};
-    Tarefa T2 = {"Revisão do código do sistema", "Carlos Henrique", FEITO, 1.00, 5};
-    Tarefa T3 = {"Criação de mockups para o app", "Juliana Ribeiro", EM_ANDAMENTO, 0.40, 3};
-    Tarefa T4 = {"Levantamento de requisitos", "Rafael Souza", A_FAZER, 0.00, 2};
-    Tarefa T5 = {"Treinamento da equipe", "Fernanda Lima", EM_ANDAMENTO, 0.60, 4};
-    Tarefa T6 = {"Testes automatizados", "Lucas Martins", A_FAZER, 0.00, 5};
-    Tarefa T7 = {"Atualização da documentação técnica", "Mariana Alves", A_FAZER, 0.00, 3};
-    Tarefa T8 = {"Integração com API externa", "Pedro Rocha", EM_ANDAMENTO, 0.50, 4};
-    Tarefa T9 = {"Apresentação para o cliente", "Bianca Torres", FEITO, 1.00, 5};
-    Tarefa T10 = {"Correção de bugs críticos", "João Victor", EM_ANDAMENTO, 0.30, 5};
+    // adicionando na lista
+    L->Dados[L->Tamanho++] = t1;
+    L->Dados[L->Tamanho++] = t2;
+    L->Dados[L->Tamanho++] = t3;
 
+    // imprimir
+    imprimirLista(L);
+
+    // liberar memória
+    free(L->Dados);
+    free(L);
 
     return 0;
 }
-

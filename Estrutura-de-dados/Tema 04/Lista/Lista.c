@@ -11,8 +11,16 @@ Lista * CriarLista (int C ) {
 
     Lista * L = malloc(sizeof(Lista));
 
-    if ()
+    if (L == NULL ) return NULL;
+    L->Capacidade = C;
+    L->Tamanho = 0;
+    L->Dados = (Tarefa *) malloc (C * sizeof(Tarefa));
 
+    if (L->Dados == NULL ) {
+        free(L);
+        return NULL;
+    }
+    return L;
 }
 
 
