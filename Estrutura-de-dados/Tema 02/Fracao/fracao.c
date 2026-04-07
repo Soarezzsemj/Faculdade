@@ -20,12 +20,11 @@ void exibirFracao(Fracao F) {
 
 int calcularMDC(int A, int B) {
 
-    int Resto = A % B;
 
-    while (Resto != 0) {
-        A = B;
-        B = Resto;
-        Resto = A % B;
+    while (B != 0) {
+        int temp = B;
+        B = A % B;
+        A = temp;
     }
 
     return B;
@@ -35,7 +34,16 @@ int calcularMDC(int A, int B) {
 Fracao simplificarFracao(Fracao F) {
     int mdc = calcularMDC(F.numerador, F.denominado);
 
+
     F.numerador = F.numerador / mdc;
     F.denominado = F.denominado / mdc;
 
+    return F;
+
 }
+
+Fracao multiplicarFracao(Fracao A, Fracao B) {
+
+
+}
+
