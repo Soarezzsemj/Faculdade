@@ -20,3 +20,8 @@ add_executable(lista_exec
         Estrutura-de-dados/Tema\ 04/Lista/Main.c
         Estrutura-de-dados/Tema\ 04/Lista/Lista.c
 )
+
+# -------- Tema 05 - Lista --------
+add_executable(temacinco_exec
+        Estrutura-de-dados/Tema\ 05/main022.c
+)
