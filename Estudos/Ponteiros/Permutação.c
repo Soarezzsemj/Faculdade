@@ -34,7 +34,6 @@ int main() {
 // função de troca
 
 void troca(int *x, int *y) {
-
     int temporario;
     temporario = *x;
     *x = *y;
