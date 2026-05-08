@@ -16,7 +16,7 @@ int main() {
     printf("&x = %p\t x = %d\n", &x, x);
     printf("&y = %p\t y = %d\n", &y, y);
 
-    px = &x;
+    px = &x; // atribui ao ponteiro *px um endereço valido, q é x ( 4)
     py = &y;
 
     printf("&px = %p\t*px = %d\n", px, *px);
