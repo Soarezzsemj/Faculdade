@@ -9,7 +9,7 @@
 #define MAX 4
 //definindo o ITEM da fila
 
-typedef struct{
+typedef struct Item{
     int Chave;
     struct Item * Proximo; // ponteiro para o próximo item (para filas encadeadas)
 
@@ -32,10 +32,10 @@ typedef struct{
 
 
 
-Item * CriarItem(int Chave);
-Fila * CriarFila();
+Item *CriarItem(int Chave);
+Fila *CriarFila();
 void DestruirFila(Fila *F);
-void Enfileirar(Fila *F, Item I);
+void Enfileirar(Fila *F, int Chave); // Passando a chave diretamente facilita
 void Desenfileirar(Fila *F);
 void ExibirFila(Fila *F);
 
@@ -45,56 +45,53 @@ void ExibirFila(Fila *F);
 int main() {
     system("clear");
 
-    // criando fila com capacidade 15
 
-    Fila * Exemplo = CriarFila(15);
 
-    Enfileirar( Exemplo, CriarItem(137)); // 137 é o primeiro elemento enfileirado
-    Enfileirar( Exemplo, CriarItem(241)); // 241 é o segundo elemento enfileirado
-    Enfileirar( Exemplo, CriarItem(3339)); // 339 é o terceiro elemento enfileirado
+    // criando a fila
 
+    Fila * Exemplo = CriarFila();
+
+    Enfileirar( Exemplo, 137); // 137 é o primeiro elemento enfileirado
+    Enfileirar( Exemplo, 241); // 241 é o segundo elemento enfileirado
+    Enfileirar( Exemplo, 3339); // 339 é o terceiro elemento enfileirado
+
+
+
+    printf("Fila atual:\n");
     ExibirFila(Exemplo);
 
-    Desenfileirar(Exemplo); // Remove o primeiro elemento (137)
-    printf("\nApós desenfileirar:\n");
-    ExibirFila(Exemplo);
+    printf("\nDesenfileirando...\n");
+    Desenfileirar(Exemplo);
 
+    ExibirFila(Exemplo);
 
     DestruirFila(Exemplo);
-
-
     return 0;
 }
 
 //implementação das operaçoes(funções)
 
 Item * CriarItem(int Chave){
+    Item *novo = (Item *)malloc(sizeof(Item));
 
-    Item *I = (Item *)malloc(sizeof(Item));
-
-    if (I == NULL) {
-        printf("Erro ao alocar memoria para o item");
-        return NULL;
+    if (novo)
+    {
+        novo -> Chave = Chave;
+        novo -> Proximo = NULL; // O próximo item é inicialmente NULL
     }
 
-    I->Chave = Chave;
-    I->Proximo = NULL; // Inicialmente, o próximo item é NULL
-    return I;
-
+    return novo;
 };
 
 Fila * CriarFila(){
 
-    Fila * F = (Fila *)malloc(sizeof(Fila));
+    Fila *F = (Fila *)malloc(sizeof(Fila));
 
-    if (F == NULL) {
-        printf("Erro ao alocar memoria para a fila");
-        return NULL;
-    }
-
-    F->Inicio = NULL; // Inicialmente, a fila está vazia, então o início é NULL
-    F->Fim = NULL; // Inicialmente, a fila está vazia, então o fim é NULL
-    F->Tamanho = 0; // Inicialmente, a fila tem tamanho 0
+    if (F){
+        F -> Inicio = NULL; // A fila começa vazia, então o início é NULL
+        F -> Fim = NULL; // O fim também é NULL inicialmente
+        F -> Tamanho = 0; // O tamanho inicial da fila é 0
+    };
 
     return F;
 
@@ -105,21 +102,29 @@ void DestruirFila(Fila *F){
 
     if (F == NULL) {
         return ; // Se a fila já for NULL, não há nada a destruir
-        free(F->Dados); // Liberar a memória alocada para os dados
         free(F); // Liberar a memória alocada para a fila
     }
 
 
 };
 
-void Enfileirar(Fila *F, Item I){
+void Enfileirar(Fila *F, int Chave){
 
-    if ( F-> Tamanho == F ->Capacidade) return ; // A fila está cheia, não é possível enfileirar
-    if (F->Inicio == -1) F->Inicio = 0; // Se a fila estava vazia, o início agora é 0
+    Item *novo = CriarItem(Chave);
+
+    if (novo == NULL) return; // Verificar se a alocação foi bem-sucedida
+
+    if (F->Fim == NULL)
+    {
+        F->Inicio = novo; // Se a fila estava vazia, o início agora é o novo item
+        F->Fim = novo; // O fim também é o novo item
+    } else
+    {
+        F->Fim->Proximo = novo; // O próximo do item atual do fim aponta para o novo item
+        F->Fim = novo; // O fim agora é o novo item
 
 
-    F->Fim = F -> Fim + 1; // Avança a posição do fim
-    F->Dados[F->Fim] = I; // Insere o item no final da fila
+    };
     F->Tamanho++; // Incrementa o tamanho da fila
 
 
@@ -127,15 +132,35 @@ void Enfileirar(Fila *F, Item I){
 
 void Desenfileirar(Fila *F){
 
-    F->Inicio = F -> Inicio + 1; // Avança a posição do fim
-    F->Tamanho--; // Incrementa o tamanho da fila
+    if (F->Inicio == NULL) return; // A fila está vazia, não é possível desenfileirar
+
+    Item *temp = F->Inicio; // guarda o item que vai ser movido
+    F -> Inicio = F->Inicio->Proximo; // O início agora é o próximo item da fila
+
+    if (F->Inicio == NULL) // Se a fila ficou vazia após desenfileirar, o fim também deve ser NULL
+    {
+        F->Fim = NULL;
+    };
+
+    free(temp); // libera a memoria
+
+    F->Tamanho--; // Decrementa o tamanho da fila
+
+
 
 };
 
 void ExibirFila(Fila *F){
 
-    for (int i = F ->Inicio; i <= F->Fim; i++) {
-        printf("Chave do item %d: %d\n", i - F->Inicio + 1, F->Dados[i].Chave);
+    Item *atual = F->Inicio; // vai printar do inicio da fila
+
+    int pos = 1; // para mostrar a posição do item na fila
+
+    while (atual != NULL)
+    {
+        printf("Chave do Item %d: %d\n", pos++, atual -> Chave);
+        atual = atual -> Proximo; // avança para o próximo item
+
     }
 
 
