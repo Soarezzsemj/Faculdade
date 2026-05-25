@@ -134,7 +134,7 @@ void Desenfileirar(Fila *F){
 
     if (F->Inicio == NULL) return; // A fila está vazia, não é possível desenfileirar
 
-    Item *temp = F->Inicio; // guarda o item que vai ser movido
+    Item *temp = F->Inicio; // guarda o item que vai ser movidoexec, hyprctl dispatch fullscreen 1
     F -> Inicio = F->Inicio->Proximo; // O início agora é o próximo item da fila
 
     if (F->Inicio == NULL) // Se a fila ficou vazia após desenfileirar, o fim também deve ser NULL
@@ -167,7 +167,7 @@ void ExibirFila(Fila *F){
 };
 
 
-
+//int felizPorVOceBB() lindoooooooo - isaias
 
 
 /*
