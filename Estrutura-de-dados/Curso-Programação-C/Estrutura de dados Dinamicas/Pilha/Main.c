@@ -61,15 +61,35 @@ No* empilhar(No *topo) {
 
 }
 
-
+//  **topo é o ponteiro do ponteiro de topo ->
 No* desempilhar(No **topo) {
+    if (*topo != NULL) {
+        No *remover = *topo;
+        *topo = remover->proximo;
+        return remover;
+    }else {
+        printf("\nPilha vazia\n");
+        return NULL;
+    }
 
+
+
+}
+
+void imprimir_pilha(No *topo) {
+    printf("\n===== PILHA =====\n");
+        while (topo) {
+            imprime_pessoa(topo->p);
+            topo = topo->proximo;
+        }
+
+    printf("\n===== FIM DA PILHA =====\n");
 }
 
 
 int main() {
 
-    No *topo = NULL; // nó de topo, sempre começa com nulo pois nao tem nada
+    No *remover ,*topo = NULL; // nó de topo, sempre começa com nulo pois nao tem nada
     int opcao;
 
     do {
@@ -83,10 +103,18 @@ int main() {
                 break;
 
             case 2:
+                remover = desempilhar(&topo);
+                if (remover) {
+                    printf("\nElemento removido com sucesso\n");
+                    imprime_pessoa(remover -> p);
+                }else {
+                    printf("\nSem nó a remover\n");
+                }
 
                 break;
 
             case 3:
+                imprimir_pilha(topo);
 
                 break;
 
